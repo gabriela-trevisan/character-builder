@@ -5,25 +5,25 @@ module.exports = app => {
 
   router.get("/teste", units.teste);
 
-  // Create a new Tutorial
+  // Create a new Unit
   router.post("/create", units.create);
 
-  // // Retrieve all Tutorials
+  // // Retrieve all Units
   router.get("/", units.findAll);
 
-  // // Retrieve all published Tutorials
+  // // Retrieve all published Units
   // router.get("/published", units.findAllPublished);
 
-  // Retrieve a single Tutorial with id
+  // Retrieve a single Unit with id
   // router.get("/:id", units.findOne);
 
-  // // Update a Tutorial with id
+  // // Update a Unit with id
   // router.put("/:id", units.update);
 
-  // // Delete a Tutorial with id
+  // // Delete a Unit with id
   // router.delete("/:id", units.delete);
 
-  // // Delete all Tutorials
+  // // Delete all Units
   // router.delete("/", units.deleteAll);
 
   app.use('/api/units', router);

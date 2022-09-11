@@ -6,16 +6,6 @@ const PointsCalculator = function(points) {
   this.total = points.total;
 };
 
-// PointsCalculator.unitsTotalCost = (values, result) => {
-//   console.log('****** PointsCalculator.unitsTotalCost() ', values)
-//     let total_cost = 0;
-//     for (let i = 0; i < values.length; i++) {
-//       total_cost += values[i].base_cost;
-//       // console.log(total_cost)
-//     }
-//     return total_cost;
-// };
-
 PointsCalculator.unitsTotalCost = (Obj, result) => {
   console.log('****** PointsCalculator.unitsTotalCost() ', Obj)
   let total_cost = 0;
