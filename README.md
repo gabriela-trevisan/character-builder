@@ -1,6 +1,5 @@
 # Character Builder
-
-## Node.js Rest API with Express & MySQL for creating and customizing characters and teams for wargames +
+#### Node.js Rest API with Express & MySQL for creating and customizing characters and teams for wargames +
 
 ### Project setup
 ```
@@ -12,7 +11,14 @@ npm install
 node server.js
 ```
 
-### GitHub
+## GitHub
+
+#### Docker
+```
+https://github.com/gabriela-trevisan/character-builder-docker.git
+```
+
+#### Character Builder
 ```
 https://github.com/gabriela-trevisan/character-builder.git
 ```
