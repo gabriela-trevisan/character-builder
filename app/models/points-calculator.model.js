@@ -6,8 +6,8 @@ const PointsCalculator = function(points) {
   this.total = points.total;
 };
 
-PointsCalculator.unitsTotalCost = (Obj, result) => {
-  console.log('****** PointsCalculator.unitsTotalCost() ', Obj)
+PointsCalculator.squadTotalCost = (Obj, result) => {
+  console.log('****** PointsCalculator.squadTotalCost() ', Obj)
   let total_cost = 0;
 
   for (var [key, unit] of Object.entries(Obj.units)) {
@@ -40,7 +40,7 @@ PointsCalculator.unitsTotalCost = (Obj, result) => {
     // Seta o total do custo para as unidades
     Obj.units.total_cost = total_cost;
   }
-  // Seta o total de pontos usados no team
+  // Seta o total de pontos usados no squad
   Obj['used_points'] = total_cost;
   return Obj;
 };

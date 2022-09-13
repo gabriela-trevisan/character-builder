@@ -1,27 +1,27 @@
 const sql = require("./db.js");
 
 // constructor
-const UserUnits = function(unit) {
+const Users = function(unit) {
   this.id = unit.id;
   this.id_user = unit.id_user;
   this.id_team = unit.id_team;
   this.unit = unit.unit;
 };
 
-UserUnits.create = (newUserUnit, result) => {
-  sql.query("INSERT INTO users SET ?", newUserUnit, (err, res) => {
+Users.create = (newUser, result) => {
+  sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
 
-    console.log("created unit: ", { id: res.insertId, ...newUserUnit });
-    result(null, { id: res.insertId, ...newUserUnit });
+    console.log("created unit: ", { id: res.insertId, ...newUser });
+    result(null, { id: res.insertId, ...newUser });
   });
 };
 
-UserUnits.findById = (id, result) => {
+Users.findById = (id, result) => {
   sql.query(`SELECT * FROM users WHERE id = ${id}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -35,12 +35,12 @@ UserUnits.findById = (id, result) => {
       return;
     }
 
-    // not found Unit with the id
+    // not found User with the id
     result({ kind: "not_found" }, null);
   });
 };
 
-UserUnits.getAll = (name, result) => {
+Users.getAll = (name, result) => {
   let query = "SELECT * FROM users";
 
   if (name) {
@@ -59,7 +59,7 @@ UserUnits.getAll = (name, result) => {
   });
 };
 
-UserUnits.getAllPublished = result => {
+Users.getAllPublished = result => {
   sql.query("SELECT * FROM users WHERE published=true", (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -72,7 +72,7 @@ UserUnits.getAllPublished = result => {
   });
 };
 
-UserUnits.updateById = (id, unit, result) => {
+Users.updateById = (id, unit, result) => {
   sql.query(
     "UPDATE users SET name = ?, description = ?, published = ? WHERE id = ?",
     [unit.name, unit.description, unit.published, id],
@@ -84,7 +84,7 @@ UserUnits.updateById = (id, unit, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // not found Unit with the id
+        // not found User with the id
         result({ kind: "not_found" }, null);
         return;
       }
@@ -95,7 +95,7 @@ UserUnits.updateById = (id, unit, result) => {
   );
 };
 
-UserUnits.remove = (id, result) => {
+Users.remove = (id, result) => {
   sql.query("DELETE FROM users WHERE id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -104,7 +104,7 @@ UserUnits.remove = (id, result) => {
     }
 
     if (res.affectedRows == 0) {
-      // not found Unit with the id
+      // not found User with the id
       result({ kind: "not_found" }, null);
       return;
     }
@@ -114,7 +114,7 @@ UserUnits.remove = (id, result) => {
   });
 };
 
-UserUnits.removeAll = result => {
+Users.removeAll = result => {
   sql.query("DELETE FROM users", (err, res) => {
     if (err) {
       console.log("error: ", err);
@@ -127,4 +127,4 @@ UserUnits.removeAll = result => {
   });
 };
 
-module.exports = UserUnits;
+module.exports = Users;

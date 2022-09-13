@@ -23,7 +23,7 @@ app.get("/", (req, res) => {
   // TODO: Criar lista de rotas
 });
 
-require("./app/routes/teams.routes.js")(app);
+require("./app/routes/squad.routes.js")(app);
 require("./app/routes/units.routes.js")(app);
 require("./app/routes/users.routes.js")(app);
 

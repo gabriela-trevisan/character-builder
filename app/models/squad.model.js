@@ -2,16 +2,16 @@ const sql = require("./db.js");
 const PointsCalculator = require("./points-calculator.model.js");
 
 // constructor
-const Teams = function(team) {
-  this.id = team.id;
-  this.id_user = team.id_user;
-  this.name = team.name;
-  this.units = team.units;
-  this.total_points = team.total_points;
-  this.used_points = team.used_points;
+const Squad = function(squad) {
+  this.id = squad.id;
+  this.id_user = squad.id_user;
+  this.name = squad.name;
+  this.units = squad.units;
+  this.total_points = squad.total_points;
+  this.used_points = squad.used_points;
 };
 
-Teams.create = (newTeam, result) => {
+Squad.create = (newTeam, result) => {
   console.log("CREATE()")
   console.log(newTeam)
   // console.log(result)
@@ -19,33 +19,33 @@ Teams.create = (newTeam, result) => {
   // TODO: validar os campos obrigatorios
 
   // Calcula os pontos
-  let TeamPointsCalculated = PointsCalculator.unitsTotalCost(newTeam)
+  let SquadTotalCost = PointsCalculator.squadTotalCost(newTeam)
   console.log("##### Retorno objeto:")
-  console.log(TeamPointsCalculated)
+  console.log(SquadTotalCost)
   
-  newTeam = TeamPointsCalculated
+  newTeam = SquadTotalCost
 
   var json_units = "{}";
   // Seta json validado no objeto
-  json_units = JSON.stringify(TeamPointsCalculated['units'])
+  json_units = JSON.stringify(SquadTotalCost['units'])
   // console.log("json units: ", json)
   newTeam['units'] = json_units
 
-  sql.query("INSERT INTO teams SET ?", newTeam, (err, res) => {
+  sql.query("INSERT INTO squad SET ?", newTeam, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
     // console.log(res)
-    console.log("created team: ", { id: res.insertId, ...newTeam });
+    console.log("created squad: ", { id: res.insertId, ...newTeam });
     newTeam.id = res.insertId;
     result(null, { id: res.insertId, ...newTeam });
   });
 };
 
-Teams.findById = (id, result) => {
-  sql.query(`SELECT * FROM teams WHERE id = ${id}`, (err, res) => {
+Squad.findById = (id, result) => {
+  sql.query(`SELECT * FROM squad WHERE id = ${id}`, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
@@ -53,18 +53,18 @@ Teams.findById = (id, result) => {
     }
 
     if (res.length) {
-      console.log("found team: ", res[0]);
+      console.log("found squad: ", res[0]);
       result(null, res[0]);
       return;
     }
 
-    // not found Team with the id
+    // not found Squad with the id
     result({ kind: "not_found" }, null);
   });
 };
 
-Teams.getAll = (title, result) => {
-  let query = "SELECT * FROM teams";
+Squad.getAll = (title, result) => {
+  let query = "SELECT * FROM squad";
 
   if (title) {
     query += ` WHERE title LIKE '%${title}%'`;
@@ -77,28 +77,28 @@ Teams.getAll = (title, result) => {
       return;
     }
 
-    console.log("teams: ", res);
+    console.log("squad: ", res);
     result(null, res);
   });
 };
 
-Teams.getAllPublished = result => {
-  sql.query("SELECT * FROM teams WHERE published=true", (err, res) => {
+Squad.getAllPublished = result => {
+  sql.query("SELECT * FROM squad WHERE published=true", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log("teams: ", res);
+    console.log("squad: ", res);
     result(null, res);
   });
 };
 
-Teams.updateById = (id, team, result) => {
+Squad.updateById = (id, squad, result) => {
   sql.query(
-    "UPDATE teams SET title = ?, description = ?, published = ? WHERE id = ?",
-    [team.title, team.description, team.published, id],
+    "UPDATE squad SET title = ?, description = ?, published = ? WHERE id = ?",
+    [squad.title, squad.description, squad.published, id],
     (err, res) => {
       if (err) {
         console.log("error: ", err);
@@ -107,19 +107,19 @@ Teams.updateById = (id, team, result) => {
       }
 
       if (res.affectedRows == 0) {
-        // not found Team with the id
+        // not found Squad with the id
         result({ kind: "not_found" }, null);
         return;
       }
 
-      console.log("updated team: ", { id: id, ...team });
-      result(null, { id: id, ...team });
+      console.log("updated squad: ", { id: id, ...squad });
+      result(null, { id: id, ...squad });
     }
   );
 };
 
-Teams.remove = (id, result) => {
-  sql.query("DELETE FROM teams WHERE id = ?", id, (err, res) => {
+Squad.remove = (id, result) => {
+  sql.query("DELETE FROM squad WHERE id = ?", id, (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
@@ -127,27 +127,27 @@ Teams.remove = (id, result) => {
     }
 
     if (res.affectedRows == 0) {
-      // not found Team with the id
+      // not found Squad with the id
       result({ kind: "not_found" }, null);
       return;
     }
 
-    console.log("deleted team with id: ", id);
+    console.log("deleted squad with id: ", id);
     result(null, res);
   });
 };
 
-Teams.removeAll = result => {
-  sql.query("DELETE FROM teams", (err, res) => {
+Squad.removeAll = result => {
+  sql.query("DELETE FROM squad", (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(null, err);
       return;
     }
 
-    console.log(`deleted ${res.affectedRows} teams`);
+    console.log(`deleted ${res.affectedRows} squad`);
     result(null, res);
   });
 };
 
-module.exports = Teams;
+module.exports = Squad;
