@@ -66,6 +66,44 @@ Users.create = (newUser, result) => {
 //   }
 // }
 
+Users.findByEmail = (email, result) => {
+  sql.query(`SELECT * FROM users WHERE email = ${email}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found email: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found User with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
+Users.findByLogin = (login, result) => {
+  sql.query(`SELECT * FROM users WHERE login = ${login}`, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found login: ", res[0]);
+      result(null, res[0]);
+      return;
+    }
+
+    // not found User with the id
+    result({ kind: "not_found" }, null);
+  });
+};
+
 Users.findById = (id, result) => {
   sql.query(`SELECT * FROM users WHERE id = ${id}`, (err, res) => {
     if (err) {
