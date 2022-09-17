@@ -28,7 +28,7 @@ exports.create = (req, res) => {
   });
 };
 
-// // Retrieve all Users from the database (with condition).
+// Retrieve all Users from the database (with condition).
 exports.findAll = (req, res) => {
   const name = req.query.name;
 
@@ -37,6 +37,57 @@ exports.findAll = (req, res) => {
       res.status(500).send({
         message:
           err.message || "Some error occurred while retrieving users."
+      });
+    else res.send(data);
+  });
+};
+
+// Retrieve library from the User
+exports.library = (req, res) => {
+  const login = req.body.login;
+  console.log('library() login: ', login)
+
+  Users.library(login, (err, data) => {
+    if (err)
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving the library."
+      });
+    else res.send(data);
+  });
+};
+
+// Retrieve library-units from the User
+exports.libraryUnits = (req, res) => {
+  const login = req.body.login;
+  console.log('libraryUnits() login: ', login)
+
+  Users.libraryUnits(login, (err, data) => {
+    if (err)
+      console.log(err)
+
+    if (err)
+    res.status(500).send({
+      message:
+          err.message || "Some error occurred while retrieving the library."
+      });
+    else res.send(data);
+  });
+};
+
+// Retrieve library-squads from the User
+exports.librarySquads = (req, res) => {
+  const login = req.body.login;
+  console.log('librarySquads() login: ', login)
+
+  Users.librarySquads(login, (err, data) => {
+    if (err)
+      console.log(err)
+
+    if (err)
+    res.status(500).send({
+      message:
+          err.message || "Some error occurred while retrieving the library."
       });
     else res.send(data);
   });

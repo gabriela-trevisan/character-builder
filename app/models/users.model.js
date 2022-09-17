@@ -35,6 +35,120 @@ Users.create = (newUser, result) => {
   });
 };
 
+// Retrieve library from User @login
+Users.library = (login, result) => {
+  
+  if(!login){
+    var err = 'Missing login param';
+    result(null, err);
+    return;
+  }
+  
+  /**
+ * Rotas:
+ * @library-units
+ * @library-squads
+ */
+  var library_routes = {
+    "library-units": "http://localhost:6868/api/users/library-units/"+login,
+    "library-squads": "http://localhost:6868/api/users/library-squads/"+login
+  };
+
+  result(null, library_routes);
+
+  /*
+  let query = `SELECT * FROM users u 
+                INNER JOIN user_units uu ON uu.id_user = u.id 
+                INNER JOIN squad s ON s.id_user = u.id`;
+
+  if (login) {
+    query += ` WHERE u.login LIKE '${login}'`;
+  }
+
+  sql.query(query, (err, res) => {
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+  });
+  */
+};
+
+// Retrieve library-units from User @login
+Users.libraryUnits = (login, result) => {
+  console.log('libraryUnits() ', login)
+
+  if(!login){
+    var err = 'Missing login param!';
+    result(null, err);
+    return;
+  }
+
+  let query = `SELECT uu.* FROM users u 
+                INNER JOIN user_units uu ON uu.id_user = u.id 
+                -- LEFT JOIN squad s ON s.id_user = u.id`;
+
+  if (login) {
+    query += ` WHERE u.login LIKE '${login}'`;
+  }
+
+  sql.query(query, (err, res) => {
+    console.log('query: ', query)
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found units from user "+login+": ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found Units from @login
+    result({ kind: "not_found" }, null);
+  });
+};
+
+// Retrieve library-squads from User @login
+Users.librarySquads = (login, result) => {
+  console.log('librarySquads() ', login)
+
+  if(!login){
+    var err = 'Missing login param!';
+    result(null, err);
+    return;
+  }
+
+  let query = `SELECT s.* FROM users u 
+                -- LEFT JOIN user_units uu ON uu.id_user = u.id 
+                INNER JOIN squad s ON s.id_user = u.id`;
+
+  if (login) {
+    query += ` WHERE u.login LIKE '${login}'`;
+  }
+
+  sql.query(query, (err, res) => {
+    console.log('query: ', query)
+    if (err) {
+      console.log("error: ", err);
+      result(null, err);
+      return;
+    }
+
+    if (res.length) {
+      console.log("found squads from user "+login+": ", res);
+      result(null, res);
+      return;
+    }
+
+    // not found Squads from @login
+    result({ kind: "not_found" }, null);
+  });
+};
+
 // Users.login = (User, result) => {
 
 // TODO: Validate email or login

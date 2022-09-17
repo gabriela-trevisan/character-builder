@@ -8,8 +8,11 @@ module.exports = app => {
   // Create a new User
   router.post("/create", users.create);
 
-  // // // Retrieve all Users
-  // router.get("/", users.findAll);
+  // Retrieve library of the user
+  // router.get("/library", users.library);
+  router.get("/library-units", users.libraryUnits);
+  router.get("/library-squads", users.librarySquads);
+  router.get("/library", users.library);
 
   // // Retrieve all published Users
   // router.get("/published", users.findAllPublished);
