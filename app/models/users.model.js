@@ -1,25 +1,70 @@
 const sql = require("./db.js");
+const bcrypt = require("bcrypt")
 
 // constructor
-const Users = function(unit) {
+const Users = function (unit) {
   this.id = unit.id;
-  this.id_user = unit.id_user;
-  this.id_team = unit.id_team;
-  this.unit = unit.unit;
+  this.login = unit.login;
+  this.email = unit.email;
+  this.password = unit.password;
 };
 
 Users.create = (newUser, result) => {
-  sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+  // Encrypt password
+  bcrypt.hash(newUser.password, 10, function (err, hash) {
     if (err) {
-      console.log("error: ", err);
+      console.log("error on generate hash: ", err);
       result(err, null);
       return;
     }
+    newUser.password = hash
 
-    console.log("created unit: ", { id: res.insertId, ...newUser });
-    result(null, { id: res.insertId, ...newUser });
+    // TODO: Validate email
+
+    sql.query("INSERT INTO users SET ?", newUser, (err, res) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+
+      console.log("created unit: ", { id: res.insertId, ...newUser });
+      result(null, { id: res.insertId, ...newUser });
+    });
+
   });
 };
+
+// Users.login = (User, result) => {
+
+// TODO: Validate email or login
+
+// bcrypt.hash(plaintextPassword, 10, function(err, hash) {
+//   // store hash in the database
+// });
+
+// De-encrypt password
+// bcrypt.compare(User.password, hash, function(err, result) {
+//   if (result) {
+//     console.log("password is valid")
+//   }
+// });
+
+// TODO: Validate password
+
+// for (var [key, value] of Object.entries(newUser)) {
+//   if(key == "password"){
+//     bcrypt.hash(value, 10, function(err, hash) {
+//       if (err) {
+//         console.log("error on generate hash: ", err);
+//         result(err, null);
+//         return;
+//       }
+//       console.log(hash)
+//       newUser['password'] = hash
+//     });
+//   }
+// }
 
 Users.findById = (id, result) => {
   sql.query(`SELECT * FROM users WHERE id = ${id}`, (err, res) => {

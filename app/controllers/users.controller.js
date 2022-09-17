@@ -1,6 +1,6 @@
-const Units = require("../models/units.model.js");
+const Users = require("../models/users.model.js");
 
-// Create and Save a new Units
+// Create and Save a new User
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -9,72 +9,69 @@ exports.create = (req, res) => {
     });
   }
 
-  // Create a Unit
-  const unit = new Units({
-    id_user: req.body.id_user,
-    id_team: req.body.id_team || false,
-    unit: req.body.unit,
-    weapons: req.body.weapons || false,
-    special_rules: req.body.special_rules || false,
-    total_cost: req.body.total_cost
+  // Create a User
+  const unit = new Users({
+    login: req.body.login,
+    email: req.body.email,
+    password: req.body.password
   });
 
-  // Save Unit in the database
-  Units.create(unit, (err, data) => {
+  // Save User in the database
+  Users.create(unit, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Units."
+          err.message || "Some error occurred while creating the user."
       });
     else res.send(data);
     // res.send('Testeeeee');
   });
 };
 
-// // Retrieve all Tutorials from the database (with condition).
+// // Retrieve all Users from the database (with condition).
 exports.findAll = (req, res) => {
   const name = req.query.name;
 
-  Units.getAll(name, (err, data) => {
+  Users.getAll(name, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving units."
+          err.message || "Some error occurred while retrieving users."
       });
     else res.send(data);
   });
 };
 
-// // Find a single Unit by Id
+// // Find a single User by Id
 // exports.findOne = (req, res) => {
-//   Units.findById(req.params.id, (err, data) => {
+//   Users.findById(req.params.id, (err, data) => {
 //     if (err) {
 //       if (err.kind === "not_found") {
 //         res.status(404).send({
-//           message: `Not found Unit with id ${req.params.id}.`
+//           message: `Not found User with id ${req.params.id}.`
 //         });
 //       } else {
 //         res.status(500).send({
-//           message: "Error retrieving Unit with id " + req.params.id
+//           message: "Error retrieving User with id " + req.params.id
 //         });
 //       }
 //     } else res.send(data);
 //   });
 // };
 
-// // find all published Tutorials
+// // find all published Users
 // exports.findAllPublished = (req, res) => {
-//   Units.getAllPublished((err, data) => {
+//   Users.getAllPublished((err, data) => {
 //     if (err)
 //       res.status(500).send({
 //         message:
-//           err.message || "Some error occurred while retrieving units."
+//           err.message || "Some error occurred while retrieving users."
 //       });
 //     else res.send(data);
 //   });
 // };
 
-// // Update a Unit identified by the id in the request
+// // Update a User identified by the id in the request
 // exports.update = (req, res) => {
 //   // Validate Request
 //   if (!req.body) {
@@ -85,18 +82,18 @@ exports.findAll = (req, res) => {
 
 //   console.log(req.body);
 
-//   Units.updateById(
+//   Users.updateById(
 //     req.params.id,
-//     new Unit(req.body),
+//     new User(req.body),
 //     (err, data) => {
 //       if (err) {
 //         if (err.kind === "not_found") {
 //           res.status(404).send({
-//             message: `Not found Unit with id ${req.params.id}.`
+//             message: `Not found User with id ${req.params.id}.`
 //           });
 //         } else {
 //           res.status(500).send({
-//             message: "Error updating Unit with id " + req.params.id
+//             message: "Error updating User with id " + req.params.id
 //           });
 //         }
 //       } else res.send(data);
@@ -104,40 +101,31 @@ exports.findAll = (req, res) => {
 //   );
 // };
 
-// // Delete a Unit with the specified id in the request
+// // Delete a User with the specified id in the request
 // exports.delete = (req, res) => {
-//   Units.remove(req.params.id, (err, data) => {
+//   Users.remove(req.params.id, (err, data) => {
 //     if (err) {
 //       if (err.kind === "not_found") {
 //         res.status(404).send({
-//           message: `Not found Unit with id ${req.params.id}.`
+//           message: `Not found User with id ${req.params.id}.`
 //         });
 //       } else {
 //         res.status(500).send({
-//           message: "Could not delete Unit with id " + req.params.id
+//           message: "Could not delete User with id " + req.params.id
 //         });
 //       }
-//     } else res.send({ message: `Unit was deleted successfully!` });
+//     } else res.send({ message: `User was deleted successfully!` });
 //   });
 // };
 
-// // Delete all Tutorials from the database.
+// // Delete all Users from the database.
 // exports.deleteAll = (req, res) => {
-//   Units.removeAll((err, data) => {
+//   Users.removeAll((err, data) => {
 //     if (err)
 //       res.status(500).send({
 //         message:
-//           err.message || "Some error occurred while removing all units."
+//           err.message || "Some error occurred while removing all users."
 //       });
-//     else res.send({ message: `All Tutorials were deleted successfully!` });
+//     else res.send({ message: `All Users were deleted successfully!` });
 //   });
-// };
-
-// new
-exports.teste = (req, res) => {
-  res.send({ message: `Teste!` })
-};
-
-// exports.create = (req, res) => {
-//   res.send({ message: `Create!` })
 // };
